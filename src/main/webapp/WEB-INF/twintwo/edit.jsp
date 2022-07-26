@@ -12,20 +12,12 @@
 	</div>
 	
 	<div id=main class="card">
-<%-- 
-		<div id="recordHeader"> 
-		<a href= "/twintwo/${twintwo.id}/editrecord"><button class="btn btn-primary">Edit</button></a>
-		</div>
---%>
+
 		<div id=about class="card">
 			
-			<form:form action='/twintwo/${twintwo.id}/edit' method='post' modelAttribute='twintwo'>
+			<form:form action='/twintwo/edit' method='post' modelAttribute='twintwo'>
 	
-				<form:input type="hidden" value="${twintwo.id}" path="id" />
-				
-				<%-- <form:input type="hidden" value="${twintwo.userMdl.id}" path="userMdl" /> --%>
-				
-				<%-- <form:input type="hidden" value="${assignedCategories}" path="twinoneMdl" /> --%>
+				<form:input type="hidden" path="id" />
 		
 				<div class="form-group">
 					<form:label path="twintwoName" for="twintwoName">twintwoName</form:label>

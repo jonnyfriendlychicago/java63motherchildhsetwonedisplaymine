@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.jonfriend.java63motherchildhsetwonedisplaymine.models.TwintwoMdl;
+import com.jonfriend.java63motherchildhsetwonedisplaymine.models.HouseMdl;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.models.TwinoneMdl;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.repositories.TwinoneRpo;
 
@@ -64,6 +65,11 @@ public class TwinoneSrv {
 		twintwoList.remove(c); 
 		this.twinoneRpo.save(p); 
 	}
+	// jrf add for house
 	
+	// get all joined house
+		public List<TwinoneMdl> getAssignedHouse(HouseMdl x){
+			return twinoneRpo.findAllByHouseMdl(x);
+		}
 	
 }

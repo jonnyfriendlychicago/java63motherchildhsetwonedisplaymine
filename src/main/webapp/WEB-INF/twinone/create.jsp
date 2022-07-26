@@ -15,11 +15,6 @@
 		<div id=form class="container-fluid">
 			<h3>Add a Twinone</h3>
 			<form:form action='/twinone/new' method='post' modelAttribute='twinone'>
-			
-				<!-- begin: JRF trying to tie user to twinone -->
-				<%-- <form:hidden value="${user.id}" path="userMdl" /> --%>
-				<!-- JRF NOTE: just put line above into the controller too, so that it's set using the session there, and elim another goofy unnecessary hidden form line -->
-				<!-- end: JRF trying to tie user to twinone -->
 				
 				<div class="form-group">
 					<form:label path="twinoneName" for="twinoneName">twinoneName</form:label>

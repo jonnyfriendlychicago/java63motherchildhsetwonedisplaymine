@@ -13,21 +13,12 @@
 	</div>
 	
 	<div id=main class="card">
-<%-- 
-		<div id="recordHeader"> 
-		<a href= "/twinone/${twinone.id}/editrecord"><button class="btn btn-primary">Edit</button></a>
-		</div>
---%>
+
 		<div id=about class="card">
 			
 			<form:form action='/twinone/edit' method='post' modelAttribute='twinone'>
-				<!-- JRF note: above is clean, replaced by hidden input below.  
-				and below is now embacing the modelAttribute/path approach.  -->
+			
 				<form:input type="hidden"  path="id" />
-				
-				<%-- <form:input type="hidden" value="${twinone.userMdl.id}" path="userMdl" /> --%>
-				<%-- <form:hidden value="${twinone.userMdl.id}" path="userMdl" /> --%>  
-				<!-- JRF: WHACK FOREVER MORE THIS SILLY HIDDEN INPUT FROM ALL EDIT FORMS; CREATEDBY IS BEING MAINTAINED BY LINE IN THE CONTROLLER;  -->
 		
 				<div class="form-group">
 					<form:label path="twinoneName" for="twinoneName">twinoneName</form:label>

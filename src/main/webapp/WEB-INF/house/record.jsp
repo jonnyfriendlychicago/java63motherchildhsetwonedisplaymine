@@ -51,14 +51,9 @@
 				</c:otherwise>
 			</c:choose>
 --%>
-		
-
 		</div>
 		<div id=about class="card">
-			
 			<p>Created by: <c:out value="${house.userMdl.userName}"></c:out>
-			
-			
 			<p>Created on: 
 			<fmt:formatDate value="${house.createdAt}" pattern="EEEE"/>,
 			<fmt:formatDate value="${house.createdAt}" pattern="MMMM dd"/>
@@ -66,9 +61,30 @@
 			<fmt:formatDate value="${house.createdAt}" pattern="yyyy"/>, 
 			<fmt:formatDate value="${house.createdAt}" pattern="h:mm a"/>
 			</p>
-			
-			
 		</div>
+		
+		<div id=list class="card">
+			<h3>Twinone List</h3>
+			<a href= "/twinone/new"><button class="btn btn-primary">Create New Twinone</button></a>
+			<table class="table table-striped table-dark">
+				<thead>
+					<tr>
+						<th scope="col">id</th>
+						<th scope="col">twinoneName</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="record" items="${childTwinone}">
+						<tr>
+							<td>${record.id}</td>
+							<td><a href="/twinone/${record.id}">${record.twinoneName}</a></td>
+
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+		
 
 	</div>
  

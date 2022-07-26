@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
 //JRF: keep below OUT when building the autoJoinTbl solution
@@ -37,6 +38,7 @@ public class TwinoneMdl {
 	private Date updatedAt;
 
 	// begin: entity-specific table fields
+//	@NotBlank
 	private String twinoneName;
     
 	private String twinoneDesc;

@@ -62,10 +62,10 @@ public class OnetwinchildCtl {
 			, HttpSession session
 			) {
 		
-		// redirect unauth / deliver auth user info
+		// log out the unauth / deliver the auth use data
 		if(session.getAttribute("userId") == null) {return "redirect:/logout";}
-//		Long userId = (Long) session.getAttribute("userId");
-//		model.addAttribute("user", userSrv.findById(userId));
+		Long userId = (Long) session.getAttribute("userId");
+		model.addAttribute("user", userSrv.findById(userId));
 		
 		// below gets us the twinone object by using incoming path variable 
 		TwinoneMdl intVar = twinoneSrv.findById(twinoneId);
@@ -76,7 +76,6 @@ public class OnetwinchildCtl {
 			TwinoneMdl intVar2 = twinoneSrv.findById(twinoneId);
 			// sending that parent record to the page
 			model.addAttribute("twinone", intVar2);
-			// placeholder for getting/sending list of already created onetwinchild
 			
 			return "onetwinchild/create.jsp";
 		} else {

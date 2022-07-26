@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jonfriend.java63motherchildhsetwonedisplaymine.models.TwintwoMdl;
+import com.jonfriend.java63motherchildhsetwonedisplaymine.models.UserMdl;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.models.TwinoneMdl;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.services.TwintwoSrv;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.services.UserSrv;
@@ -62,17 +63,23 @@ public class TwintwoCtl {
 			, HttpSession session
 			) {
 		
-		// If no userId is found in session, redirect to logout.  JRF: put this on basically all methods now, except the login/reg pages
+		// log out the unauth / deliver the auth use data
 		if(session.getAttribute("userId") == null) {return "redirect:/logout";}
-		
-		// We get the userId from our session (we need to cast the result to a Long as the 'session.getAttribute("userId")' returns an object
 		Long userId = (Long) session.getAttribute("userId");
 		model.addAttribute("user", userSrv.findById(userId));
 		
 		if(result.hasErrors()) {
 			return "twintwo/create.jsp";
 		} else {
+
+			// below shall be implemented if/when there is cause for twintwo to join to user and thereby capture createdBy_id
+//			// below gets the userModel object by calling the user service with the session user id
+//			UserMdl currentUserMdl = userSrv.findById(userId);
+//			// below sets the userId of the new record with above acquisition.
+//			twintwoMdl.setUserMdl( currentUserMdl);
+			
 			twintwoSrv.create(twintwoMdl);
+			
 			return "redirect:/home";
 		}	
 	}
@@ -132,13 +139,12 @@ public class TwintwoCtl {
 	}
 	
 	// process edits
-	@PostMapping("/twintwo/{id}/edit")
+	@PostMapping("/twintwo/edit")
 	public String PostTheEditTwintwo(
 			@Valid 
 			@ModelAttribute("twintwo") TwintwoMdl twintwoMdl 
 			, BindingResult result
 			, Model model
-			, @PathVariable("id") Long twintwoId 
 			, HttpSession session
 			, RedirectAttributes redirectAttributes
 			) {
@@ -158,7 +164,10 @@ public class TwintwoCtl {
 //			redirectAttributes.addFlashAttribute("mgmtPermissionErrorMsg", "Only the creator of a record can edit it.");
 //			return "redirect:/publication";
 //		}
-		TwintwoMdl intVar = twintwoSrv.findById(twintwoId);
+		
+//		TwintwoMdl intVar = twintwoSrv.findById(twintwoId);
+		// below now setting up intVar object by using the getID on the modAtt thing. 
+		TwintwoMdl intVar = twintwoSrv.findById(twintwoMdl.getId());
 		
 		if (result.hasErrors()) { 
 			
@@ -171,10 +180,16 @@ public class TwintwoCtl {
 			return "twintwo/edit.jsp";
 		} else {
 			
+			// this returns the joined twinone records list
 			twintwoMdl.setTwinoneMdl(twinoneSrv.getAssignedTwintwos(intVar)); 
+			
+			// below line to be implemented if/when user needs to be captured on twintwo
+//				twintwoMdl.setUserMdl(intVar.getUserMdl());
+			// translation of line above: we are reSETTING on the twinone model object/record the createbyid to that which is GETTING the creatingbyid from the DB... NO LONGER from that silly hidden input.
+			
 			twintwoSrv.update(twintwoMdl);
 			
-			return "redirect:/twintwo/" + twintwoId;
+			return "redirect:/twintwo/" + intVar.getId();
 		}
 	}
 	

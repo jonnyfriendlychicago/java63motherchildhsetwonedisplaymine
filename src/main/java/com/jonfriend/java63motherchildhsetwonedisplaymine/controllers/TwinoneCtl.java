@@ -72,10 +72,8 @@ public class TwinoneCtl {
 			, HttpSession session
 			) {
 		
-		// If no userId is found in session, redirect to logout.  JRF: put this on basically all methods now, except the login/reg pages
+		// log out the unauth / deliver the auth use data
 		if(session.getAttribute("userId") == null) {return "redirect:/logout";}
-		
-		// We get the userId from our session (we need to cast the result to a Long as the 'session.getAttribute("userId")' returns an object
 		Long userId = (Long) session.getAttribute("userId");
 		model.addAttribute("user", userSrv.findById(userId));
 		
@@ -83,7 +81,7 @@ public class TwinoneCtl {
 			return "twinone/create.jsp";
 		}else {
 
-			// this gets the userModel object by calling the user service with the seeion user id
+			// below gets the userModel object by calling the user service with the session user id
 			UserMdl currentUserMdl = userSrv.findById(userId);
 			// below sets the userId of the new record with above acquisition.
 			twinoneMdl.setUserMdl( currentUserMdl);
@@ -152,16 +150,12 @@ public class TwinoneCtl {
 	}
 	
 	// process the edit(s)
-//	@PostMapping("/twinone/{id}/edit")
-	// line above replaced by below.  we used to include the path variable id of the record, but we've side stepped that with the ModAtt approach.
 	@PostMapping("/twinone/edit")
 	public String PostTheEditTwinone(
 			@Valid 
 			@ModelAttribute("twinone") TwinoneMdl twinoneMdl 
 			, BindingResult result
 			, Model model
-//			, @PathVariable("id") Long twinoneId
-			// above no longer needed, b/c we are using modAtt approach.
 			, HttpSession session
 			, RedirectAttributes redirectAttributes
 			) {
@@ -196,14 +190,13 @@ public class TwinoneCtl {
 			return "twinone/edit.jsp";
 		} else {
 			
-			// this merely returns the joined twintwo records list
+			// this returns the joined twintwo records list
 			twinoneMdl.setTwintwoMdl(twintwoSrv.getAssignedTwinones(intVar));
 			
 			twinoneMdl.setUserMdl(intVar.getUserMdl());
 			// translation of line above: we are reSETTING on the twinone model object/record the createbyid to that which is GETTING the creatingbyid from the DB... NO LONGER from that silly hidden input. 
 
 			twinoneSrv.update(twinoneMdl);
-			// below now setting up intVar object by using the getID on the modAtt thing. 
 			return "redirect:/twinone/" + intVar.getId();
 		}
 	}

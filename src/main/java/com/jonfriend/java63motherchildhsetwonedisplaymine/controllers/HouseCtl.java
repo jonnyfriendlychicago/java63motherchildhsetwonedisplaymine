@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.models.UserMdl;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.models.HouseMdl;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.services.HouseSrv;
+import com.jonfriend.java63motherchildhsetwonedisplaymine.services.TwinoneSrv;
 import com.jonfriend.java63motherchildhsetwonedisplaymine.services.UserSrv;
 
 @Controller
@@ -25,6 +26,9 @@ public class HouseCtl {
 
 	@Autowired
 	private HouseSrv houseSrv;
+	
+	@Autowired
+	private TwinoneSrv twinoneSrv;
 	
 	@Autowired
 	private UserSrv userSrv;
@@ -63,7 +67,7 @@ public class HouseCtl {
 			return "house/create.jsp";
 		}else {
 
-			// this gets the userModel object by calling the user service with the seeion user id
+			// below gets the userModel object by calling the user service with the session user id
 			UserMdl currentUserMdl = userSrv.findById(userId);
 			// below sets the userId of the new record with above acquisition.
 			houseMdl.setUserMdl( currentUserMdl);
@@ -90,7 +94,7 @@ public class HouseCtl {
 		HouseMdl intVar = houseSrv.findById(id);
 		
 		model.addAttribute("house", intVar);
-//		model.addAttribute("assignedCategories", twintwoSrv.getAssignedHouses(intVar));
+		model.addAttribute("childTwinone", twinoneSrv.getAssignedHouse(intVar));
 //		model.addAttribute("unassignedCategories", twintwoSrv.getUnassignedHouses(intVar));
 		
 		return "house/record.jsp";
@@ -113,27 +117,17 @@ public class HouseCtl {
 		HouseMdl intVar = houseSrv.findById(houseId);
 		
 		model.addAttribute("house", intVar);
-//		model.addAttribute("assignedCategories", twintwoSrv.getAssignedHouses(intVar));
-//		model.addAttribute("unassignedCategories", twintwoSrv.getUnassignedHouses(intVar));
-		
-		// records in 'manage-one' interface dropdown
-//		List<DojoMdl> intVar3 = dojoSrvIntVar.returnAll();
-//		model.addAttribute("dojoList", intVar3); 
 		
 		return "house/edit.jsp";
 	}
 	
 	// process the edit(s)
-//	@PostMapping("/house/{id}/edit")
-	// line above replaced by below.  we used to include the path variable id of the record, but we've side stepped that with the ModAtt approach.
 	@PostMapping("/house/edit")
 	public String PostTheEditHouse(
 			@Valid 
 			@ModelAttribute("house") HouseMdl houseMdl 
 			, BindingResult result
 			, Model model
-//			, @PathVariable("id") Long houseId
-			// above no longer needed, b/c we are using modAtt approach.
 			, HttpSession session
 			, RedirectAttributes redirectAttributes
 			) {
@@ -162,20 +156,14 @@ public class HouseCtl {
             Long userId = (Long) session.getAttribute("userId");
             model.addAttribute("user", userSrv.findById(userId));            
 //            model.addAttribute("house", intVar);
-//            model.addAttribute("assignedCategories", twintwoSrv.getAssignedHouses(intVar));
-//            model.addAttribute("unassignedCategories", twintwoSrv.getUnassignedHouses(intVar));
 
 			return "house/edit.jsp";
 		} else {
-			
-//			// this merely returns the joined twintwo records list
-//			houseMdl.setTwintwoMdl(twintwoSrv.getAssignedHouses(intVar));
-			
+		
 			houseMdl.setUserMdl(intVar.getUserMdl());
 			// translation of line above: we are reSETTING on the house model object/record the createbyid to that which is GETTING the creatingbyid from the DB... NO LONGER from that silly hidden input. 
 
 			houseSrv.update(houseMdl);
-			// below now setting up intVar object by using the getID on the modAtt thing. 
 			return "redirect:/house/" + intVar.getId();
 		}
 	}

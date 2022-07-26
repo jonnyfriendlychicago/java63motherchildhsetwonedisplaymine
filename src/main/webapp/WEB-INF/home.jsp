@@ -40,6 +40,7 @@
 						<tr>
 							<th scope="col">id</th>
 							<th scope="col">Name</th>
+							<th scope="col">Created By</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -47,6 +48,7 @@
 							<tr>
 								<td>${record.id}</td>
 								<td><a href="/house/${record.id}">${record.houseName}</a></td>
+								<td>${record.userMdl.userName} </td>
 							</tr>
 						</c:forEach>
 					</tbody>
